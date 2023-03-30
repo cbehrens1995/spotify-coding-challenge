@@ -1,0 +1,13 @@
+package org.cbehrens.spotifycodingchallenge;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class SpotifyCodingChallengeApplication {
+
+    public static void main(String[] args) {
+        SpringApplication.run(SpotifyCodingChallengeApplication.class, args);
+    }
+
+}
