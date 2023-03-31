@@ -18,13 +18,13 @@ class ArtistCreatorTest {
     @Mock
     private ArtistRepository artistRepository;
     @Mock
-    private ArtistDtoValidator artistDtoValidator;
+    private SpotifyDtoValidator spotifyDtoValidator;
 
     private ArtistCreator testee;
 
     @BeforeEach
     void init() {
-        testee = new ArtistCreator(artistRepository, artistDtoValidator);
+        testee = new ArtistCreator(artistRepository, spotifyDtoValidator);
     }
 
     @Test
@@ -34,7 +34,12 @@ class ArtistCreatorTest {
         var name = "Mamaduke";
         var popularity = 12;
         var imageUrl = "imageUrl";
-        var artistDto = new ArtistDto(null, null, followersCount, null, imageUrl, name, popularity, null, null, false);
+        var artistDto = ArtistDtoBuilder.artistDto(null)
+                .withFollowersCount(followersCount)
+                .withImageUrl(imageUrl)
+                .withName(name)
+                .withPopularity(popularity)
+                .build();
 
         when(artistRepository.save(any(Artist.class)))
                 .thenAnswer(AdditionalAnswers.returnsFirstArg());

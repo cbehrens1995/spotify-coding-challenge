@@ -1,5 +1,6 @@
 package org.cbehrens.spotifycodingchallenge.artist;
 
+import org.cbehrens.spotifycodingchallenge.commons.AbstractDto;
 import org.cbehrens.spotifycodingchallenge.commons.Origin;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -29,20 +30,31 @@ class ArtistConvertServiceTest {
         var name = "name";
         var uri = "uri";
         var origin = Origin.MANUAL;
-        var artist = new Artist(externalSpotifyUrl, followersCount, spotifyId, imageUrl, name, popularity, uri, origin);
+        var id = 187L;
+        var artist = ArtistBuilder.artist(id)
+                .withExternalSpotifyUrl(externalSpotifyUrl)
+                .withFollowersCount(followersCount)
+                .withSpotifyId(spotifyId)
+                .withImageUrl(imageUrl)
+                .withName(name)
+                .withPopularity(popularity)
+                .withUri(uri)
+                .withOrigin(origin)
+                .build();
 
         //when
         ArtistDto result = testee.toDto(artist);
 
         //then
         assertThat(result)
-                .returns(externalSpotifyUrl, ArtistDto::externalSpotifyUrl)
-                .returns(followersCount, ArtistDto::followersCount)
-                .returns(spotifyId, ArtistDto::spotifyId)
-                .returns(imageUrl, ArtistDto::imageUrl)
-                .returns(popularity, ArtistDto::popularity)
-                .returns(name, ArtistDto::name)
-                .returns(uri, ArtistDto::uri)
-                .returns(origin, ArtistDto::origin);
+                .returns(id, AbstractDto::getId)
+                .returns(externalSpotifyUrl, ArtistDto::getExternalSpotifyUrl)
+                .returns(followersCount, ArtistDto::getFollowersCount)
+                .returns(spotifyId, ArtistDto::getSpotifyId)
+                .returns(imageUrl, ArtistDto::getImageUrl)
+                .returns(popularity, ArtistDto::getPopularity)
+                .returns(name, ArtistDto::getName)
+                .returns(uri, ArtistDto::getUri)
+                .returns(origin, ArtistDto::getOrigin);
     }
 }

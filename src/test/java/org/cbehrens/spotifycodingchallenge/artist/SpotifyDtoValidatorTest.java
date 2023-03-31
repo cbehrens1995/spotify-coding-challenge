@@ -15,13 +15,13 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatNoException;
 
 @ExtendWith(MockitoExtension.class)
-class ArtistDtoValidatorTest {
+class SpotifyDtoValidatorTest {
 
-    private ArtistDtoValidator testee;
+    private SpotifyDtoValidator testee;
 
     @BeforeEach
     void init() {
-        testee = new ArtistDtoValidator();
+        testee = new SpotifyDtoValidator();
     }
 
     private static Stream<Arguments> parameterFor_thatCreateManuallyThrowsException_SpotifyInformationProvided() {
@@ -38,7 +38,11 @@ class ArtistDtoValidatorTest {
                                                                                         String spotifyId,
                                                                                         String uri) {
         //given
-        var artistDto = new ArtistDto(null, externalSpotifyUrl, 1, spotifyId, null, "Mamaduke", 12, uri, null, false);
+        var artistDto = ArtistDtoBuilder.artistDto(null)
+                .withExternalSpotifyUrl(externalSpotifyUrl)
+                .withSpotifyId(spotifyId)
+                .withUri(uri)
+                .build();
 
         //when /then
         assertThatExceptionOfType(SpotifyInformationNotAllowedException.class).isThrownBy(() -> testee.assertDtoHasNoSpotifyInformation(artistDto))
@@ -48,7 +52,7 @@ class ArtistDtoValidatorTest {
     @Test
     void thatAssertDtoHasNoSpotifyInformationDoesNothing() {
         //given
-        var artistDto = new ArtistDto(null, null, 1, null, null, "Mamaduke", 12, null, null, false);
+        var artistDto = ArtistDtoBuilder.artistDto(null).build();
 
         //when /then
         assertThatNoException().isThrownBy(() -> testee.assertDtoHasNoSpotifyInformation(artistDto));

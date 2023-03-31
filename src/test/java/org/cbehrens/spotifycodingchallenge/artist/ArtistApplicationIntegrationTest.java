@@ -53,37 +53,45 @@ public class ArtistApplicationIntegrationTest {
         var followersCount = 1337;
         var name = "Mamaduke";
         var popularity = 10;
-        var artistDto = new ArtistDto(null, null, followersCount, null, null, name, popularity, null, null, false);
+        var artistDto = ArtistDtoBuilder.artistDto(null)
+                .withFollowersCount(followersCount)
+                .withName(name)
+                .withPopularity(popularity)
+                .build();
 
         ArtistDto result = testee.create(artistDto);
 
-        Long id = result.id();
+        Long id = result.getId();
         assertThat(id).isNotNull();
         assertThat(result)
-                .returns(followersCount, ArtistDto::followersCount)
-                .returns(name, ArtistDto::name)
-                .returns(popularity, ArtistDto::popularity)
-                .returns(Origin.MANUAL, ArtistDto::origin);
+                .returns(followersCount, ArtistDto::getFollowersCount)
+                .returns(name, ArtistDto::getName)
+                .returns(popularity, ArtistDto::getPopularity)
+                .returns(Origin.MANUAL, ArtistDto::getOrigin);
 
         // READ part
         ArtistDto newArtistDto = testee.getById(id);
         assertThat(newArtistDto)
-                .returns(id, ArtistDto::id)
-                .returns(followersCount, ArtistDto::followersCount)
-                .returns(name, ArtistDto::name)
-                .returns(popularity, ArtistDto::popularity)
-                .returns(Origin.MANUAL, ArtistDto::origin);
+                .returns(id, ArtistDto::getId)
+                .returns(followersCount, ArtistDto::getFollowersCount)
+                .returns(name, ArtistDto::getName)
+                .returns(popularity, ArtistDto::getPopularity)
+                .returns(Origin.MANUAL, ArtistDto::getOrigin);
 
         // UPDATE part
-        var updateArtistDto = new ArtistDto(id, null, followersCount + 1, null, null, name, popularity, null, null, false);
+        var updateArtistDto = ArtistDtoBuilder.artistDto(id)
+                .withFollowersCount(followersCount + 1)
+                .withName(name)
+                .withPopularity(popularity)
+                .build();
 
         ArtistDto updatedArtistDto = testee.update(updateArtistDto);
         assertThat(updatedArtistDto)
-                .returns(id, ArtistDto::id)
-                .returns(followersCount + 1, ArtistDto::followersCount)
-                .returns(name, ArtistDto::name)
-                .returns(popularity, ArtistDto::popularity)
-                .returns(Origin.MANUAL, ArtistDto::origin);
+                .returns(id, ArtistDto::getId)
+                .returns(followersCount + 1, ArtistDto::getFollowersCount)
+                .returns(name, ArtistDto::getName)
+                .returns(popularity, ArtistDto::getPopularity)
+                .returns(Origin.MANUAL, ArtistDto::getOrigin);
 
         //DELETE part
         assertThatNoException().isThrownBy(() -> testee.deleteById(id));

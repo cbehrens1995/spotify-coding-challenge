@@ -30,7 +30,7 @@ public class ArtistApplicationService {
     }
 
     public ArtistDto update(ArtistDto artistDto) {
-        Artist artist = artistRepository.findByIdOrThrow(artistDto.id());
+        Artist artist = artistRepository.findByIdOrThrow(artistDto.getId());
         Artist updatedArtist = artistUpdater.update(artist, artistDto);
         return artistConvertService.toDto(updatedArtist);
     }

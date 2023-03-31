@@ -1,11 +1,12 @@
 package org.cbehrens.spotifycodingchallenge.artist;
 
+import org.cbehrens.spotifycodingchallenge.album.Album;
 import org.cbehrens.spotifycodingchallenge.commons.AbstractSpotifyEntity;
 import org.cbehrens.spotifycodingchallenge.commons.Origin;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "artist")
@@ -22,6 +23,16 @@ public class Artist extends AbstractSpotifyEntity {
 
     @Column(name = "popularity")
     private Integer popularity;
+
+    @ManyToMany(cascade = {
+            CascadeType.PERSIST,
+            CascadeType.MERGE
+    })
+    @JoinTable(name = "album_to_artist",
+            joinColumns = @JoinColumn(name = "fk_artist"),
+            inverseJoinColumns = @JoinColumn(name = "fk_album")
+    )
+    private List<Album> albums = new ArrayList<>();
 
     public Artist(String externalSpotifyUrl, Integer followersCount, String spotifyId, String imageUrl, String name, Integer popularity, String uri, Origin origin) {
         super(externalSpotifyUrl, spotifyId, uri, origin);
@@ -64,5 +75,17 @@ public class Artist extends AbstractSpotifyEntity {
 
     public void setPopularity(Integer popularity) {
         this.popularity = popularity;
+    }
+
+    public List<Album> getAlbums() {
+        return albums;
+    }
+
+    public void addAlbum(Album album) {
+        albums.add(album);
+    }
+
+    public void removeAlbums() {
+        albums.clear();
     }
 }
