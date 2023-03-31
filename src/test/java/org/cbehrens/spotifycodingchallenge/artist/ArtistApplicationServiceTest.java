@@ -1,6 +1,5 @@
 package org.cbehrens.spotifycodingchallenge.artist;
 
-import org.cbehrens.spotifycodingchallenge.commons.Origin;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -8,7 +7,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class ArtistApplicationServiceTest {
@@ -32,9 +32,9 @@ class ArtistApplicationServiceTest {
     @Test
     void thatGetByIdWorks() {
         //given
-        var artist = mock(Artist.class);
-        var artistDto = createDtoWithOnlyNullValues();
         var id = 187L;
+        var artist = ArtistBuilder.artist(id).build();
+        var artistDto = ArtistDtoBuilder.artistDto(null).build();
 
         when(artistRepository.findByIdOrThrow(id))
                 .thenReturn(artist);
@@ -51,9 +51,9 @@ class ArtistApplicationServiceTest {
     @Test
     void thatCreateWorks() {
         //given
-        var artistDto1 = createDtoWithOnlyNullValues();
-        var artist = mock(Artist.class);
-        var artistDto2 = createDtoWithOnlyNullValues();
+        var artistDto1 = ArtistDtoBuilder.artistDto(null).build();
+        var artist = ArtistBuilder.artist(1L).build();
+        var artistDto2 = ArtistDtoBuilder.artistDto(null).build();
 
         when(artistCreator.createManually(artistDto1))
                 .thenReturn(artist);
@@ -70,8 +70,8 @@ class ArtistApplicationServiceTest {
     @Test
     void thatDeleteByIdWorks() {
         //given
-        var artist = mock(Artist.class);
         var id = 187L;
+        var artist = ArtistBuilder.artist(id).build();
 
         when(artistRepository.findByIdOrThrow(id))
                 .thenReturn(artist);
@@ -87,10 +87,10 @@ class ArtistApplicationServiceTest {
     void thatUpdateWorks() {
         //given
         var id = 1337L;
-        var artistDto = new ArtistDto(id, null, null, null, null, null, null, null, Origin.MANUAL, false);
-        var artist = mock(Artist.class);
-        var updatedArtist = mock(Artist.class);
-        var resultDto = createDtoWithOnlyNullValues();
+        var artistDto = ArtistDtoBuilder.artistDto(id).build();
+        var artist = ArtistBuilder.artist(id).build();
+        var updatedArtist = ArtistBuilder.artist(id).build();
+        var resultDto = ArtistDtoBuilder.artistDto(null).build();
 
         when(artistRepository.findByIdOrThrow(id))
                 .thenReturn(artist);
@@ -104,9 +104,5 @@ class ArtistApplicationServiceTest {
 
         //then
         assertThat(result).isEqualTo(resultDto);
-    }
-
-    private ArtistDto createDtoWithOnlyNullValues() {
-        return new ArtistDto(null, null, null, null, null, null, null, null, Origin.MANUAL, false);
     }
 }

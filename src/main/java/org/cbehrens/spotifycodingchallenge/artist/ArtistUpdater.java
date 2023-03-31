@@ -8,34 +8,34 @@ import java.util.Objects;
 @Component
 public class ArtistUpdater {
 
-    private final ArtistDtoValidator artistDtoValidator;
+    private final SpotifyDtoValidator spotifyDtoValidator;
 
     @Autowired
-    public ArtistUpdater(ArtistDtoValidator artistDtoValidator) {
-        this.artistDtoValidator = artistDtoValidator;
+    public ArtistUpdater(SpotifyDtoValidator spotifyDtoValidator) {
+        this.spotifyDtoValidator = spotifyDtoValidator;
     }
 
     public Artist update(Artist artist, ArtistDto artistDto) {
-        artistDtoValidator.assertDtoHasNoSpotifyInformation(artistDto);
+        spotifyDtoValidator.assertDtoHasNoSpotifyInformation(artistDto);
         boolean updatedOccurred = false;
-        if (!Objects.equals(artist.getFollowersCount(), artistDto.followersCount())) {
-            artist.setFollowersCount(artistDto.followersCount());
+        if (!Objects.equals(artist.getFollowersCount(), artistDto.getFollowersCount())) {
+            artist.setFollowersCount(artistDto.getFollowersCount());
             updatedOccurred = true;
         }
 
-        if (!Objects.equals(artist.getName(), artistDto.name())) {
-            artist.setName(artistDto.name());
+        if (!Objects.equals(artist.getName(), artistDto.getName())) {
+            artist.setName(artistDto.getName());
             updatedOccurred = true;
         }
 
-        if (!Objects.equals(artist.getPopularity(), artistDto.popularity())) {
-            artist.setPopularity(artistDto.popularity());
+        if (!Objects.equals(artist.getPopularity(), artistDto.getPopularity())) {
+            artist.setPopularity(artistDto.getPopularity());
             updatedOccurred = true;
         }
 
 
-        if (!Objects.equals(artist.getImageUrl(), artistDto.imageUrl())) {
-            artist.setImageUrl(artistDto.imageUrl());
+        if (!Objects.equals(artist.getImageUrl(), artistDto.getImageUrl())) {
+            artist.setImageUrl(artistDto.getImageUrl());
             updatedOccurred = true;
         }
 

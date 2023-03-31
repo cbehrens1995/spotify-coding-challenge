@@ -1,6 +1,5 @@
 package org.cbehrens.spotifycodingchallenge.artist;
 
-import org.cbehrens.spotifycodingchallenge.commons.Origin;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -18,13 +17,13 @@ import static org.mockito.Mockito.verify;
 class ArtistUpdaterTest {
 
     @Mock
-    private ArtistDtoValidator artistDtoValidator;
+    private SpotifyDtoValidator spotifyDtoValidator;
 
     private ArtistUpdater testee;
 
     @BeforeEach
     void init() {
-        testee = new ArtistUpdater(artistDtoValidator);
+        testee = new ArtistUpdater(spotifyDtoValidator);
     }
 
     private static Stream<Arguments> parameterFor_thatUpdateWorks() {
@@ -47,8 +46,20 @@ class ArtistUpdaterTest {
                          String imageUrl,
                          boolean manuallyAdjusted) {
         //given
-        var artist = new Artist(null, 1, null, "imageUrl", "name", 2, null, Origin.MANUAL);
-        var artistDto = new ArtistDto(null, null, followersCount, null, imageUrl, name, popularity, null, Origin.MANUAL, false);
+        var id = 187L;
+        var artist = ArtistBuilder.artist(id)
+                .withFollowersCount(1)
+                .withImageUrl("imageUrl")
+                .withName("name")
+                .withPopularity(2)
+                .build();
+
+        var artistDto = ArtistDtoBuilder.artistDto(id)
+                .withFollowersCount(followersCount)
+                .withName(name)
+                .withPopularity(popularity)
+                .withImageUrl(imageUrl)
+                .build();
 
         //when
         Artist result = testee.update(artist, artistDto);
@@ -64,6 +75,6 @@ class ArtistUpdaterTest {
                 .returns(null, Artist::getSpotifyId)
                 .returns(null, Artist::getUri);
 
-        verify(artistDtoValidator).assertDtoHasNoSpotifyInformation(artistDto);
+        verify(spotifyDtoValidator).assertDtoHasNoSpotifyInformation(artistDto);
     }
 }
