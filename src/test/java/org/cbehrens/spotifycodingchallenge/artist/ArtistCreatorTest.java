@@ -1,5 +1,6 @@
 package org.cbehrens.spotifycodingchallenge.artist;
 
+import org.cbehrens.spotifycodingchallenge.artist.spotify.ArtistSpotifyDtoBuilder;
 import org.cbehrens.spotifycodingchallenge.commons.Origin;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -57,5 +58,43 @@ class ArtistCreatorTest {
                 .returns(null, Artist::getExternalSpotifyUrl)
                 .returns(null, Artist::getSpotifyId)
                 .returns(null, Artist::getUri);
+    }
+
+    @Test
+    void thatCreateFromSpotifyWorks() {
+        //given
+        var followersCount = 1;
+        var name = "Mamaduke";
+        var popularity = 12;
+        var imageUrl = "imageUrl";
+        var spotifyId = "spotifyId";
+        var uri = "uri";
+        var externalSpotifyUrl = "externalSpotifyUrl";
+        var artistDto = ArtistSpotifyDtoBuilder.artistSpotifyDto()
+                .withFollowersCount(followersCount)
+                .addImageUrl(imageUrl)
+                .withName(name)
+                .withPopularity(popularity)
+                .withId(spotifyId)
+                .withUri(uri)
+                .withExternalUrls(externalSpotifyUrl)
+                .build();
+
+        when(artistRepository.save(any(Artist.class)))
+                .thenAnswer(AdditionalAnswers.returnsFirstArg());
+
+        //when
+        Artist result = testee.createFromSpotify(artistDto);
+
+        //then
+        assertThat(result)
+                .returns(name, Artist::getName)
+                .returns(followersCount, Artist::getFollowersCount)
+                .returns(popularity, Artist::getPopularity)
+                .returns(Origin.SPOTIFY, Artist::getOrigin)
+                .returns(imageUrl, Artist::getImageUrl)
+                .returns(externalSpotifyUrl, Artist::getExternalSpotifyUrl)
+                .returns(spotifyId, Artist::getSpotifyId)
+                .returns(uri, Artist::getUri);
     }
 }
