@@ -38,7 +38,7 @@ public class ArtistDtoBuilder extends AbstractSpotifyDtoBuilder<ArtistDto, Artis
     }
 
     @Override
-    protected ArtistDto build() {
+    public ArtistDto build() {
         return new ArtistDto(id, externalSpotifyUrl, spotifyId, uri, origin, manuallyAdjusted, followersCount, imageUrl, name, popularity);
     }
 }
