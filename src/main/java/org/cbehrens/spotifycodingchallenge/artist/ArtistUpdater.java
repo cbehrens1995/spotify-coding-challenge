@@ -1,12 +1,11 @@
 package org.cbehrens.spotifycodingchallenge.artist;
 
+import org.cbehrens.spotifycodingchallenge.commons.SpotifyEntityUpdater;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.Objects;
-
 @Component
-public class ArtistUpdater {
+public class ArtistUpdater extends SpotifyEntityUpdater<Artist> {
 
     private final SpotifyDtoValidator spotifyDtoValidator;
 
@@ -17,29 +16,13 @@ public class ArtistUpdater {
 
     public Artist update(Artist artist, ArtistDto artistDto) {
         spotifyDtoValidator.assertDtoHasNoSpotifyInformation(artistDto);
-        boolean updatedOccurred = false;
-        if (!Objects.equals(artist.getFollowersCount(), artistDto.getFollowersCount())) {
-            artist.setFollowersCount(artistDto.getFollowersCount());
-            updatedOccurred = true;
-        }
 
-        if (!Objects.equals(artist.getName(), artistDto.getName())) {
-            artist.setName(artistDto.getName());
-            updatedOccurred = true;
-        }
+        boolean isFollowersCountUpdated = updateIfChanged(artist, Artist::getFollowersCount, Artist::setFollowersCount, artistDto.getFollowersCount());
+        boolean isNameUpdated = updateIfChanged(artist, Artist::getName, Artist::setName, artistDto.getName());
+        boolean isPopularityUpdated = updateIfChanged(artist, Artist::getPopularity, Artist::setPopularity, artistDto.getPopularity());
+        boolean isImageUrlUpdated = updateIfChanged(artist, Artist::getImageUrl, Artist::setImageUrl, artistDto.getImageUrl());
 
-        if (!Objects.equals(artist.getPopularity(), artistDto.getPopularity())) {
-            artist.setPopularity(artistDto.getPopularity());
-            updatedOccurred = true;
-        }
-
-
-        if (!Objects.equals(artist.getImageUrl(), artistDto.getImageUrl())) {
-            artist.setImageUrl(artistDto.getImageUrl());
-            updatedOccurred = true;
-        }
-
-        if (updatedOccurred) {
+        if (isFollowersCountUpdated || isNameUpdated || isPopularityUpdated || isImageUrlUpdated) {
             artist.setManuallyAdjusted();
         }
 
