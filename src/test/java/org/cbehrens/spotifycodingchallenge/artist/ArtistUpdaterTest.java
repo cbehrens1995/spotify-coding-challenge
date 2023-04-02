@@ -1,5 +1,6 @@
 package org.cbehrens.spotifycodingchallenge.artist;
 
+import org.cbehrens.spotifycodingchallenge.artist.spotify.ArtistSpotifyDtoBuilder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -62,7 +63,7 @@ class ArtistUpdaterTest {
                 .build();
 
         //when
-        Artist result = testee.update(artist, artistDto);
+        Artist result = testee.updateFromSpotify(artist, artistDto);
 
         //then
         assertThat(result)
@@ -76,5 +77,50 @@ class ArtistUpdaterTest {
                 .returns(null, Artist::getUri);
 
         verify(spotifyDtoValidator).assertDtoHasNoSpotifyInformation(artistDto);
+    }
+
+    private static Stream<Arguments> parameterFor_thatUpdateFromSpotifyWorks() {
+        return Stream.of(
+                Arguments.of(1, "name", 2, "imageUrl", false),
+                Arguments.of(2, "name", 2, "imageUrl", true),
+                Arguments.of(null, "name", 2, "imageUrl", true),
+                Arguments.of(1, "new_name", 2, "imageUrl", true),
+                Arguments.of(1, "name", 3, "imageUrl", true),
+                Arguments.of(1, "name", null, "imageUrl", true),
+                Arguments.of(1, "name", 2, "new_imageUrl", true));
+    }
+
+    @ParameterizedTest
+    @MethodSource("parameterFor_thatUpdateFromSpotifyWorks")
+    void thatUpdateFromSpotifyWorks(Integer followersCount,
+                                    String name,
+                                    Integer popularity,
+                                    String imageUrl) {
+        //given
+        var id = 187L;
+        var artist = ArtistBuilder.artist(id)
+                .withFollowersCount(1)
+                .withImageUrl("imageUrl")
+                .withName("name")
+                .withPopularity(2)
+                .build();
+
+        var artistDto = ArtistSpotifyDtoBuilder.artistSpotifyDto()
+                .withFollowersCount(followersCount)
+                .withName(name)
+                .withPopularity(popularity)
+                .addImageUrl(imageUrl)
+                .build();
+
+        //when
+        testee.updateFromSpotify(artist, artistDto);
+
+        //then
+        assertThat(artist)
+                .returns(followersCount, Artist::getFollowersCount)
+                .returns(name, Artist::getName)
+                .returns(popularity, Artist::getPopularity)
+                .returns(imageUrl, Artist::getImageUrl)
+                .returns(false, Artist::isManuallyAdjusted);
     }
 }
