@@ -4,7 +4,9 @@ import org.cbehrens.spotifycodingchallenge.album.copyright.Copyright;
 import org.cbehrens.spotifycodingchallenge.album.copyright.CopyrightBuilder;
 import org.cbehrens.spotifycodingchallenge.album.copyright.CopyrightDtoBuilder;
 import org.cbehrens.spotifycodingchallenge.album.copyright.CopyrightType;
+import org.cbehrens.spotifycodingchallenge.album.spotify.AlbumSpotifyDtoBuilder;
 import org.cbehrens.spotifycodingchallenge.artist.*;
+import org.cbehrens.spotifycodingchallenge.artist.spotify.ArtistSpotifyDtoBuilder;
 import org.cbehrens.spotifycodingchallenge.commons.AbstractSpotifyEntity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -235,5 +237,34 @@ class AlbumUpdaterTest {
 
         verify(spotifyDtoValidator).assertDtoHasNoSpotifyInformation(albumDto);
         verifyNoInteractions(artistRetriever);
+    }
+
+    @Test
+    void thatUpdateWorks_FromSpotify() {
+        //given
+        var artist1 = ArtistBuilder.artist(2L).build();
+        var album = AlbumBuilder.album(1L)
+                .addArtist(artist1)
+                .build();
+        var imageUrl = "imageUrl";
+        var artistSpotifyDto = ArtistSpotifyDtoBuilder.artistSpotifyDto().build();
+        var albumSpotifyDto = AlbumSpotifyDtoBuilder.albumSpotifyDto()
+                .addImageUrl(imageUrl)
+                .withRestrictionReason(null)
+                .addArtistSpotifyDto(artistSpotifyDto)
+                .build();
+        var artist2 = ArtistBuilder.artist(3L).build();
+
+        when(artistRetriever.getOrCreateBySpotify(artistSpotifyDto))
+                .thenReturn(artist2);
+
+        //when
+        testee.update(album, albumSpotifyDto);
+
+        //then
+        assertThat(album)
+                .returns(imageUrl, Album::getImageUrl)
+                .returns(null, Album::getRestrictionReason);
+        assertThat(album.getArtists()).containsExactly(artist2);
     }
 }

@@ -1,8 +1,8 @@
 package org.cbehrens.spotifycodingchallenge.artist;
 
 import org.cbehrens.spotifycodingchallenge.artist.spotify.ArtistSpotifyDto;
-import org.cbehrens.spotifycodingchallenge.artist.spotify.Image;
 import org.cbehrens.spotifycodingchallenge.commons.Origin;
+import org.cbehrens.spotifycodingchallenge.commons.spotify.Image;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

@@ -2,12 +2,18 @@ package org.cbehrens.spotifycodingchallenge.album;
 
 import org.cbehrens.spotifycodingchallenge.album.copyright.Copyright;
 import org.cbehrens.spotifycodingchallenge.album.copyright.CopyrightDto;
+import org.cbehrens.spotifycodingchallenge.album.spotify.AlbumByArtistSpotifyDto;
+import org.cbehrens.spotifycodingchallenge.album.spotify.CopyrightSpotifyDto;
+import org.cbehrens.spotifycodingchallenge.album.spotify.Restriction;
 import org.cbehrens.spotifycodingchallenge.artist.Artist;
 import org.cbehrens.spotifycodingchallenge.artist.ArtistRetriever;
 import org.cbehrens.spotifycodingchallenge.artist.SpotifyDtoValidator;
+import org.cbehrens.spotifycodingchallenge.artist.spotify.ArtistSpotifyDto;
 import org.cbehrens.spotifycodingchallenge.commons.Origin;
+import org.cbehrens.spotifycodingchallenge.commons.spotify.Image;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -46,5 +52,34 @@ public class AlbumCreator {
                 .map(copyrightDto -> new Copyright(copyrightDto.getText(), copyrightDto.getCopyrightType(), album))
                 .forEach(album::addCopyright);
         return albumRepository.save(album);
+    }
+
+    @Transactional
+    public Album create(AlbumByArtistSpotifyDto albumsByArtistSpotifyDto, List<ArtistSpotifyDto> artistSpotifyDtos) {
+        List<Artist> artists = artistSpotifyDtos.stream()
+                .map(artistRetriever::getOrCreateBySpotify)
+                .toList();
+        String externalSpotifyUrl = albumsByArtistSpotifyDto.externalUrls().spotify();
+        String imageUrl = albumsByArtistSpotifyDto.images().stream()
+                .map(Image::url)
+                .findFirst().orElse(null);
+        Restriction restriction = albumsByArtistSpotifyDto.restriction();
+        RestrictionReason restrictionReason = restriction != null ? restriction.reason() : null;
+
+        List<CopyrightDto> copyrightDtos = getCopyrightDtos(albumsByArtistSpotifyDto);
+        return createInternal(externalSpotifyUrl, albumsByArtistSpotifyDto.id(), albumsByArtistSpotifyDto.uri(), Origin.SPOTIFY,
+                albumsByArtistSpotifyDto.trackCount(), imageUrl, albumsByArtistSpotifyDto.name(), albumsByArtistSpotifyDto.releaseDate(),
+                albumsByArtistSpotifyDto.releaseDatePrecision(), restrictionReason, albumsByArtistSpotifyDto.albumType(),
+                artists, copyrightDtos);
+    }
+
+    private List<CopyrightDto> getCopyrightDtos(AlbumByArtistSpotifyDto albumsByArtistSpotifyDto) {
+        List<CopyrightSpotifyDto> copyrightSpotifyDtos = albumsByArtistSpotifyDto.copyrightSpotifyDtos();
+        if (copyrightSpotifyDtos != null) {
+            return copyrightSpotifyDtos.stream()
+                    .map(copyrightSpotifyDto -> new CopyrightDto(null, copyrightSpotifyDto.text(), copyrightSpotifyDto.type()))
+                    .toList();
+        }
+        return List.of();
     }
 }

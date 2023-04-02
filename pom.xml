@@ -19,6 +19,8 @@
         <testcontainers.version>1.17.6</testcontainers.version>
         <springdoc-openapi-ui.version>1.6.15</springdoc-openapi-ui.version>
         <spring-cloud-dependencies.version>2021.0.4</spring-cloud-dependencies.version>
+        <wiremock-jre8.version>2.35.0</wiremock-jre8.version>
+        <commons-collections4.version>4.4</commons-collections4.version>
     </properties>
 
     <dependencyManagement>
@@ -98,6 +100,13 @@
         </dependency>
 
         <dependency>
+            <groupId>com.github.tomakehurst</groupId>
+            <artifactId>wiremock-jre8</artifactId>
+            <version>${wiremock-jre8.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-ui</artifactId>
             <version>${springdoc-openapi-ui.version}</version>
@@ -111,7 +120,7 @@
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-collections4</artifactId>
-            <version>4.4</version>
+            <version>${commons-collections4.version}</version>
         </dependency>
 
     </dependencies>

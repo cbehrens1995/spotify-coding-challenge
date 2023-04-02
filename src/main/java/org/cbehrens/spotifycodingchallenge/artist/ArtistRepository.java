@@ -4,5 +4,7 @@ import org.cbehrens.spotifycodingchallenge.commons.AbstractRepository;
 
 public interface ArtistRepository extends AbstractRepository<Artist> {
 
-    boolean existsBySpotifyId(String id);
+    boolean existsBySpotifyId(String spotifyId);
+
+    Artist findBySpotifyId(String spotifyId);
 }

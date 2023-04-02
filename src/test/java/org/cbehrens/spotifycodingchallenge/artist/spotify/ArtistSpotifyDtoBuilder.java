@@ -1,5 +1,8 @@
 package org.cbehrens.spotifycodingchallenge.artist.spotify;
 
+import org.cbehrens.spotifycodingchallenge.commons.spotify.ExternalUrls;
+import org.cbehrens.spotifycodingchallenge.commons.spotify.Image;
+
 import java.util.ArrayList;
 import java.util.List;
 

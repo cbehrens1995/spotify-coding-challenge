@@ -23,10 +23,10 @@ class AlbumApplicationServiceIntegrationTest extends AbstractIntegrationTest {
     void thatNotExistingIdsThrowExceptions_Get_Delete() {
         //when /then
         assertThatExceptionOfType(ResourceNotFoundException.class)
-                .isThrownBy(() -> testee.getById(1L));
+                .isThrownBy(() -> testee.getById(-1L));
 
         assertThatExceptionOfType(ResourceNotFoundException.class)
-                .isThrownBy(() -> testee.deleteById(1L));
+                .isThrownBy(() -> testee.deleteById(-1L));
     }
 
     /**
