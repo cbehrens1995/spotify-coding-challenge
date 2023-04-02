@@ -4,10 +4,7 @@ import org.cbehrens.spotifycodingchallenge.album.*;
 import org.cbehrens.spotifycodingchallenge.album.spotify.AlbumByArtistSpotifyDto;
 import org.cbehrens.spotifycodingchallenge.album.spotify.AlbumSpotifyDto;
 import org.cbehrens.spotifycodingchallenge.album.spotify.AlbumsByArtistSpotifyDto;
-import org.cbehrens.spotifycodingchallenge.artist.Artist;
-import org.cbehrens.spotifycodingchallenge.artist.ArtistCreator;
-import org.cbehrens.spotifycodingchallenge.artist.ArtistRepository;
-import org.cbehrens.spotifycodingchallenge.artist.ArtistSpotifyClient;
+import org.cbehrens.spotifycodingchallenge.artist.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,9 +41,10 @@ public class ArtistDataInitializer {
     private final AlbumCreator albumCreator;
     private final AlbumSpotifyClient albumSpotifyClient;
     private final AlbumUpdater albumUpdater;
+    private final ArtistIndexService artistIndexService;
 
     @Autowired
-    public ArtistDataInitializer(ArtistSpotifyClient artistSpotifyClient, ArtistCreator artistCreator, ArtistRepository artistRepository, AlbumRepository albumRepository, AlbumCreator albumCreator, AlbumSpotifyClient albumSpotifyClient, AlbumUpdater albumUpdater) {
+    public ArtistDataInitializer(ArtistSpotifyClient artistSpotifyClient, ArtistCreator artistCreator, ArtistRepository artistRepository, AlbumRepository albumRepository, AlbumCreator albumCreator, AlbumSpotifyClient albumSpotifyClient, AlbumUpdater albumUpdater, ArtistIndexService artistIndexService) {
         this.artistSpotifyClient = artistSpotifyClient;
         this.artistCreator = artistCreator;
         this.artistRepository = artistRepository;
@@ -54,10 +52,11 @@ public class ArtistDataInitializer {
         this.albumCreator = albumCreator;
         this.albumSpotifyClient = albumSpotifyClient;
         this.albumUpdater = albumUpdater;
+        this.artistIndexService = artistIndexService;
     }
 
     @PostConstruct
-    public void initArtists() {
+    public void initArtists() throws InterruptedException {
         ArtistSpotifyWrapperDto artistSpotifyWrapperDto = artistSpotifyClient.getArtists(artistSpotifyIds);
         List<Artist> artists = artistSpotifyWrapperDto.artistSpotifyDtos().stream()
                 .filter(artistSpotifyDto -> !artistRepository.existsBySpotifyId(artistSpotifyDto.id()))
@@ -66,6 +65,8 @@ public class ArtistDataInitializer {
         LOGGER.info("Initialized {} artists", artists.size());
 
         artists.forEach(this::initAlbumsForArtist);
+
+        artistIndexService.initiateIndexing();
     }
 
     private void initAlbumsForArtist(Artist artist) {

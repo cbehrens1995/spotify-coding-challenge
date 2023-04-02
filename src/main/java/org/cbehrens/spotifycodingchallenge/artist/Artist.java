@@ -3,6 +3,8 @@ package org.cbehrens.spotifycodingchallenge.artist;
 import org.cbehrens.spotifycodingchallenge.album.Album;
 import org.cbehrens.spotifycodingchallenge.commons.AbstractSpotifyEntity;
 import org.cbehrens.spotifycodingchallenge.commons.Origin;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.FullTextField;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.Indexed;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -10,7 +12,12 @@ import java.util.List;
 
 @Entity
 @Table(name = "artist")
+@Indexed
 public class Artist extends AbstractSpotifyEntity {
+
+    public static class FieldInfo {
+        public static final String ARTIST_NAME = "artist_name";
+    }
 
     @Column(name = "followers_count")
     private Integer followersCount;
@@ -18,6 +25,7 @@ public class Artist extends AbstractSpotifyEntity {
     @Column(name = "image_url")
     private String imageUrl;
 
+    @FullTextField(name = FieldInfo.ARTIST_NAME)
     @Column(name = "artist_name")
     private String name;
 

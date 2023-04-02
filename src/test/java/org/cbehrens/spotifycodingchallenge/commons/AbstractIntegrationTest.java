@@ -13,6 +13,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.PostgreSQLContainer;
+import org.testcontainers.containers.wait.strategy.Wait;
+import org.testcontainers.elasticsearch.ElasticsearchContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
@@ -23,6 +25,10 @@ public abstract class AbstractIntegrationTest {
 
     @Container
     public static PostgreSQLContainer postgreSQLContainer = PostgresContainer.getInstance();
+
+    @Container
+    public static ElasticsearchContainer elasticsearchContainer = new ElasticsearchContainer("docker.elastic.co/elasticsearch/elasticsearch:7.17.9")
+            .waitingFor(Wait.forHttp(""));
 
     @RegisterExtension
     static WireMockExtension wireMockServer = WireMockExtension.newInstance()
@@ -35,6 +41,8 @@ public abstract class AbstractIntegrationTest {
         registry.add("spring.datasource.url", postgreSQLContainer::getJdbcUrl);
         registry.add("spring.datasource.username", postgreSQLContainer::getUsername);
         registry.add("spring.datasource.password", postgreSQLContainer::getPassword);
+
+        registry.add("spring.jpa.properties.hibernate.search.backend.uris", elasticsearchContainer::getHttpHostAddress);
 
         registry.add("spring.security.oauth2.client.provider.spotify-developer.token-uri", () -> wireMockServer.baseUrl() + "/token");
         registry.add("artist.client.url", () -> wireMockServer.baseUrl() + "/artist");

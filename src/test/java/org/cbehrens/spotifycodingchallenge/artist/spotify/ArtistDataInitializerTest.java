@@ -4,10 +4,7 @@ import org.cbehrens.spotifycodingchallenge.album.*;
 import org.cbehrens.spotifycodingchallenge.album.spotify.AlbumByArtistSpotifyDtoBuilder;
 import org.cbehrens.spotifycodingchallenge.album.spotify.AlbumSpotifyDtoBuilder;
 import org.cbehrens.spotifycodingchallenge.album.spotify.AlbumsByArtistSpotifyDtoBuilder;
-import org.cbehrens.spotifycodingchallenge.artist.ArtistBuilder;
-import org.cbehrens.spotifycodingchallenge.artist.ArtistCreator;
-import org.cbehrens.spotifycodingchallenge.artist.ArtistRepository;
-import org.cbehrens.spotifycodingchallenge.artist.ArtistSpotifyClient;
+import org.cbehrens.spotifycodingchallenge.artist.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -42,12 +39,14 @@ class ArtistDataInitializerTest {
     private AlbumSpotifyClient albumSpotifyClient;
     @Mock
     private AlbumUpdater albumUpdater;
+    @Mock
+    private ArtistIndexService artistIndexService;
 
     private ArtistDataInitializer testee;
 
     @BeforeEach
     void init() {
-        testee = new ArtistDataInitializer(artistSpotifyClient, artistCreator, artistRepository, albumRepository, albumCreator, albumSpotifyClient, albumUpdater);
+        testee = new ArtistDataInitializer(artistSpotifyClient, artistCreator, artistRepository, albumRepository, albumCreator, albumSpotifyClient, albumUpdater, artistIndexService);
         ReflectionTestUtils.setField(testee, "artistSpotifyIds", ARTIST_IDS);
         ReflectionTestUtils.setField(testee, "includedGroups", INCLUDED_GROUPS);
         ReflectionTestUtils.setField(testee, "market", MARKET);
@@ -56,7 +55,7 @@ class ArtistDataInitializerTest {
     }
 
     @Test
-    void thatInitArtistsWorks() {
+    void thatInitArtistsWorks() throws InterruptedException {
         //given
         var spotifyId1 = "spotifyId1";
         var artistSpotifyDto1 = ArtistSpotifyDtoBuilder.artistSpotifyDto()
@@ -90,12 +89,13 @@ class ArtistDataInitializerTest {
         testee.initArtists();
 
         //then
+        verify(artistIndexService).initiateIndexing();
         verifyNoInteractions(albumRepository);
         verifyNoMoreInteractions(artistSpotifyClient, albumCreator, albumUpdater);
     }
 
     @Test
-    void thatInitArtistsWorks_UpdateAlbums() {
+    void thatInitArtistsWorks_UpdateAlbums() throws InterruptedException {
         //given
         var spotifyId1 = "spotifyId1";
         var artistSpotifyDto1 = ArtistSpotifyDtoBuilder.artistSpotifyDto()
@@ -139,6 +139,7 @@ class ArtistDataInitializerTest {
 
         //then
         verify(albumUpdater).update(album, albumSpotifyDto);
+        verify(artistIndexService).initiateIndexing();
     }
 
     @Test
