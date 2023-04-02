@@ -10,7 +10,7 @@ import javax.persistence.*;
 public class Copyright extends AbstractEntity {
 
     @Column(name = "copyright_text")
-    private String text;
+    private String copyrightText;
 
     @Column(name = "copyright_type")
     @Enumerated(EnumType.STRING)
@@ -23,14 +23,14 @@ public class Copyright extends AbstractEntity {
     protected Copyright() {
     }
 
-    public Copyright(String text, CopyrightType copyrightType, Album album) {
-        this.text = text;
+    public Copyright(String copyrightText, CopyrightType copyrightType, Album album) {
+        this.copyrightText = copyrightText;
         this.copyrightType = copyrightType;
         this.album = album;
     }
 
-    public String getText() {
-        return text;
+    public String getCopyrightText() {
+        return copyrightText;
     }
 
     public CopyrightType getCopyrightType() {

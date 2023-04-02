@@ -8,7 +8,7 @@ import java.util.List;
 public class CopyrightConvertService {
 
     public CopyrightDto toDto(Copyright copyright) {
-        return new CopyrightDto(copyright.getId(), copyright.getText(), copyright.getCopyrightType());
+        return new CopyrightDto(copyright.getId(), copyright.getCopyrightText(), copyright.getCopyrightType());
     }
 
     public List<CopyrightDto> toDtos(List<Copyright> copyrights){

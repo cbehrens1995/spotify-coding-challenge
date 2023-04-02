@@ -18,12 +18,12 @@ public class AlbumController {
         this.albumApplicationService = albumApplicationService;
     }
 
-    @GetMapping(value = "/{id}")
+    @GetMapping("/{id}")
     public AlbumDto getById(@PathVariable("id") Long id) {
         return albumApplicationService.getById(id);
     }
 
-    @GetMapping(value = "/byArtist/{artistId}")
+    @GetMapping("/byArtist/{artistId}")
     public List<AlbumDto> getByArtist(@PathVariable("artistId") Long artistId) {
         return albumApplicationService.getByArtist(artistId);
     }

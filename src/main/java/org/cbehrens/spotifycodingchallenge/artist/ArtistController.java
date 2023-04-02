@@ -16,7 +16,7 @@ public class ArtistController {
         this.artistApplicationService = artistApplicationService;
     }
 
-    @GetMapping(value = "/{id}")
+    @GetMapping("/{id}")
     public ArtistDto getById(@PathVariable("id") Long id) {
         return artistApplicationService.getById(id);
     }
@@ -31,7 +31,7 @@ public class ArtistController {
         return artistApplicationService.update(artistDto);
     }
 
-    @DeleteMapping(value = "/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Long> deleteBy(@PathVariable("id") Long id) {
         artistApplicationService.deleteById(id);
         return new ResponseEntity<>(id, HttpStatus.OK);

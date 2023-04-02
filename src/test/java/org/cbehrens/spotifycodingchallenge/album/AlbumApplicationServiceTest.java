@@ -43,7 +43,6 @@ class AlbumApplicationServiceTest {
         var album = AlbumBuilder.album(id).build();
         var albumDto = AlbumDtoBuilder.albumDto(id).build();
 
-
         when(albumRepository.findByIdOrThrow(id))
                 .thenReturn(album);
         when(albumConvertService.toDto(album))

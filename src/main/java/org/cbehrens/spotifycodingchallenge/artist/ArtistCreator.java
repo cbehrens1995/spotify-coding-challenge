@@ -28,7 +28,8 @@ public class ArtistCreator {
         Integer followersCount = artistSpotifyDto.followers().total();
         String imageUrl = artistSpotifyDto.images().stream()
                 .map(Image::url)
-                .findFirst().orElse(null);
+                .findFirst()
+                .orElse(null);
         return createInternal(externalSpotifyUrl, followersCount, artistSpotifyDto.id(),
                 imageUrl, artistSpotifyDto.name(), artistSpotifyDto.popularity(), artistSpotifyDto.uri(), Origin.SPOTIFY);
     }

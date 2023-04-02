@@ -60,7 +60,7 @@ public class AlbumUpdater extends SpotifyEntityUpdater<Album> {
 
         boolean isTrackCountUpdated = updateIfChanged(album, Album::getTrackCount, Album::setTrackCount, trackCount);
         boolean isImageUrlUpdated = updateIfChanged(album, Album::getImageUrl, Album::setImageUrl, imageUrl);
-        boolean isNameUpdated = updateIfChanged(album, Album::getName, Album::setName, name);
+        boolean isNameUpdated = updateIfChanged(album, Album::getAlbumNname, Album::setAlbumNname, name);
         boolean isReleaseDateUpdated = updateIfChanged(album, Album::getReleaseDate, Album::setReleaseDate, releaseDate);
         boolean isReleaseDatePrecisionUpdated = updateIfChanged(album, Album::getReleaseDatePrecision, Album::setReleaseDatePrecision, releaseDatePrecision);
         boolean isRestrictionReasonUpdated = updateIfChanged(album, Album::getRestrictionReason, Album::setRestrictionReason, restrictionReason);
@@ -91,7 +91,7 @@ public class AlbumUpdater extends SpotifyEntityUpdater<Album> {
      */
     private boolean updateCopyrightsIfNecessary(Album album, List<Pair<CopyrightType, String>> newCopyrightPairs) {
         List<Pair<CopyrightType, String>> currentCopyrightPairs = album.getCopyrights().stream()
-                .map(copyright -> Pair.of(copyright.getCopyrightType(), copyright.getText()))
+                .map(copyright -> Pair.of(copyright.getCopyrightType(), copyright.getCopyrightText()))
                 .toList();
 
         if (CollectionUtils.containsAll(currentCopyrightPairs, newCopyrightPairs) &&
@@ -146,7 +146,8 @@ public class AlbumUpdater extends SpotifyEntityUpdater<Album> {
     public void update(Album album, AlbumSpotifyDto albumSpotifyDto) {
         String imageUrl = albumSpotifyDto.images().stream()
                 .map(Image::url)
-                .findFirst().orElse(null);
+                .findFirst()
+                .orElse(null);
         Restriction restriction = albumSpotifyDto.restriction();
         RestrictionReason restrictionReason = restriction != null ? restriction.reason() : null;
         updateBasicFieldIfNecessary(album, albumSpotifyDto.trackCount(), imageUrl, albumSpotifyDto.name(),
