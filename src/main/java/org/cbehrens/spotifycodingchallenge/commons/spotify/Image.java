@@ -1,4 +1,4 @@
-package org.cbehrens.spotifycodingchallenge.artist.spotify;
+package org.cbehrens.spotifycodingchallenge.commons.spotify;
 
 public record Image(
         String url,

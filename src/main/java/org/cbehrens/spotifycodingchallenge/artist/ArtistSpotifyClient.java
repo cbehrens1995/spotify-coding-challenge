@@ -1,5 +1,6 @@
 package org.cbehrens.spotifycodingchallenge.artist;
 
+import org.cbehrens.spotifycodingchallenge.album.spotify.AlbumsByArtistSpotifyDto;
 import org.cbehrens.spotifycodingchallenge.artist.spotify.ArtistSpotifyDto;
 import org.cbehrens.spotifycodingchallenge.artist.spotify.ArtistSpotifyWrapperDto;
 import org.cbehrens.spotifycodingchallenge.configuration.OAuthFeignConfiguration;
@@ -13,7 +14,7 @@ import java.util.List;
 
 @FeignClient(
         name = "artistSpotifyClient",
-        url = "https://api.spotify.com/v1/artists",
+        url = "${artist.client.url}",
         configuration = OAuthFeignConfiguration.class)
 public interface ArtistSpotifyClient {
 
@@ -23,5 +24,13 @@ public interface ArtistSpotifyClient {
     @GetMapping
     @CollectionFormat(feign.CollectionFormat.CSV)
     ArtistSpotifyWrapperDto getArtists(@RequestParam("ids") List<String> ids);
+
+    @GetMapping(value = "/{spotifyId}/albums")
+    @CollectionFormat(feign.CollectionFormat.CSV)
+    AlbumsByArtistSpotifyDto getAlbumsByArtist(@PathVariable("spotifyId") String id,
+                                               @RequestParam("include_groups") List<String> includeGroups,
+                                               @RequestParam("market") String market,
+                                               @RequestParam("limit") Integer limit,
+                                               @RequestParam("offset") Integer offset);
 
 }

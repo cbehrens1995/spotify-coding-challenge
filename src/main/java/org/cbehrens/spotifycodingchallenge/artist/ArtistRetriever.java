@@ -1,5 +1,6 @@
 package org.cbehrens.spotifycodingchallenge.artist;
 
+import org.cbehrens.spotifycodingchallenge.artist.spotify.ArtistSpotifyDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -21,5 +22,15 @@ public class ArtistRetriever {
         }
 
         return artistCreator.createManually(artistDto);
+    }
+
+    public Artist getOrCreateBySpotify(ArtistSpotifyDto artistSpotifyDto) {
+        Artist artist = artistRepository.findBySpotifyId(artistSpotifyDto.id());
+
+        if (artist != null) {
+            return artist;
+        }
+
+        return artistCreator.createFromSpotify(artistSpotifyDto);
     }
 }
