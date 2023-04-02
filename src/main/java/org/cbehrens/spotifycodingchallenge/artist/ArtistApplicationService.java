@@ -31,7 +31,7 @@ public class ArtistApplicationService {
 
     public ArtistDto update(ArtistDto artistDto) {
         Artist artist = artistRepository.findByIdOrThrow(artistDto.getId());
-        Artist updatedArtist = artistUpdater.update(artist, artistDto);
+        Artist updatedArtist = artistUpdater.updateFromSpotify(artist, artistDto);
         return artistConvertService.toDto(updatedArtist);
     }
 
