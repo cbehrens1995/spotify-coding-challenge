@@ -31,7 +31,7 @@ public class AlbumConvertService {
         List<CopyrightDto> copyrightDtos = copyrightConvertService.toDtos(copyrights);
 
         return new AlbumDto(album.getId(), album.getExternalSpotifyUrl(), album.getSpotifyId(), album.getUri(), album.getOrigin(),
-                album.isManuallyAdjusted(), album.getTrackCount(), album.getImageUrl(), album.getName(), album.getReleaseDate(),
+                album.isManuallyAdjusted(), album.getTrackCount(), album.getImageUrl(), album.getAlbumNname(), album.getReleaseDate(),
                 album.getReleaseDatePrecision(), album.getRestrictionReason(), album.getAlbumType(), copyrightDtos, artistDtos);
     }
 

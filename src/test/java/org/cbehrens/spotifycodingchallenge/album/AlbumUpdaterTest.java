@@ -83,7 +83,7 @@ class AlbumUpdaterTest {
         assertThat(result)
                 .returns(trackCount, Album::getTrackCount)
                 .returns(imageUrl, Album::getImageUrl)
-                .returns(name, Album::getName)
+                .returns(name, Album::getAlbumNname)
                 .returns(releaseDate, Album::getReleaseDate)
                 .returns(releaseDatePrecision, Album::getReleaseDatePrecision)
                 .returns(restrictionReason, Album::getRestrictionReason)
@@ -169,7 +169,7 @@ class AlbumUpdaterTest {
         assertThat(result.isManuallyAdjusted()).isTrue();
         assertThat(result.getCopyrights()).hasSize(1);
         assertThat(result.getCopyrights().get(0))
-                .returns(text, Copyright::getText)
+                .returns(text, Copyright::getCopyrightText)
                 .returns(copyrightType, Copyright::getCopyrightType)
                 .returns(album, Copyright::getAlbum);
 

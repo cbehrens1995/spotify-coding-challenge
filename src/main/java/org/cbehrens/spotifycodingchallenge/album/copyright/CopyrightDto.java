@@ -20,4 +20,12 @@ public class CopyrightDto extends AbstractDto {
     public CopyrightType getCopyrightType() {
         return copyrightType;
     }
+
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    public void setCopyrightType(CopyrightType copyrightType) {
+        this.copyrightType = copyrightType;
+    }
 }

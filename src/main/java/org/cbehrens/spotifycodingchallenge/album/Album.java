@@ -20,7 +20,7 @@ public class Album extends AbstractSpotifyEntity {
     private String imageUrl;
 
     @Column(name = "album_name")
-    private String name;
+    private String albumNname;
 
     @Column(name = "release_date")
     private String releaseDate;
@@ -53,11 +53,11 @@ public class Album extends AbstractSpotifyEntity {
     protected Album() {
     }
 
-    public Album(String externalSpotifyUrl, String spotifyId, String uri, Origin origin, Integer trackCount, String imageUrl, String name, String releaseDate, ReleaseDatePrecision releaseDatePrecision, RestrictionReason restrictionReason, AlbumType albumType) {
+    public Album(String externalSpotifyUrl, String spotifyId, String uri, Origin origin, Integer trackCount, String imageUrl, String albumNname, String releaseDate, ReleaseDatePrecision releaseDatePrecision, RestrictionReason restrictionReason, AlbumType albumType) {
         super(externalSpotifyUrl, spotifyId, uri, origin);
         this.trackCount = trackCount;
         this.imageUrl = imageUrl;
-        this.name = name;
+        this.albumNname = albumNname;
         this.releaseDate = releaseDate;
         this.releaseDatePrecision = releaseDatePrecision;
         this.restrictionReason = restrictionReason;
@@ -80,12 +80,12 @@ public class Album extends AbstractSpotifyEntity {
         this.imageUrl = imageUrl;
     }
 
-    public String getName() {
-        return name;
+    public String getAlbumNname() {
+        return albumNname;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setAlbumNname(String name) {
+        this.albumNname = name;
     }
 
     public String getReleaseDate() {

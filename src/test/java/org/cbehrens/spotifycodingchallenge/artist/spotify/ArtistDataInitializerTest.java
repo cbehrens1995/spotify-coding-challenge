@@ -4,7 +4,10 @@ import org.cbehrens.spotifycodingchallenge.album.*;
 import org.cbehrens.spotifycodingchallenge.album.spotify.AlbumByArtistSpotifyDtoBuilder;
 import org.cbehrens.spotifycodingchallenge.album.spotify.AlbumSpotifyDtoBuilder;
 import org.cbehrens.spotifycodingchallenge.album.spotify.AlbumsByArtistSpotifyDtoBuilder;
-import org.cbehrens.spotifycodingchallenge.artist.*;
+import org.cbehrens.spotifycodingchallenge.artist.ArtistBuilder;
+import org.cbehrens.spotifycodingchallenge.artist.ArtistCreator;
+import org.cbehrens.spotifycodingchallenge.artist.ArtistRepository;
+import org.cbehrens.spotifycodingchallenge.artist.ArtistSpotifyClient;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -39,14 +42,12 @@ class ArtistDataInitializerTest {
     private AlbumSpotifyClient albumSpotifyClient;
     @Mock
     private AlbumUpdater albumUpdater;
-    @Mock
-    private ArtistIndexService artistIndexService;
 
     private ArtistDataInitializer testee;
 
     @BeforeEach
     void init() {
-        testee = new ArtistDataInitializer(artistSpotifyClient, artistCreator, artistRepository, albumRepository, albumCreator, albumSpotifyClient, albumUpdater, artistIndexService);
+        testee = new ArtistDataInitializer(artistSpotifyClient, artistCreator, artistRepository, albumRepository, albumCreator, albumSpotifyClient, albumUpdater);
         ReflectionTestUtils.setField(testee, "artistSpotifyIds", ARTIST_IDS);
         ReflectionTestUtils.setField(testee, "includedGroups", INCLUDED_GROUPS);
         ReflectionTestUtils.setField(testee, "market", MARKET);
@@ -89,7 +90,6 @@ class ArtistDataInitializerTest {
         testee.initArtists();
 
         //then
-        verify(artistIndexService).initiateIndexing();
         verifyNoInteractions(albumRepository);
         verifyNoMoreInteractions(artistSpotifyClient, albumCreator, albumUpdater);
     }
@@ -139,7 +139,6 @@ class ArtistDataInitializerTest {
 
         //then
         verify(albumUpdater).update(album, albumSpotifyDto);
-        verify(artistIndexService).initiateIndexing();
     }
 
     @Test

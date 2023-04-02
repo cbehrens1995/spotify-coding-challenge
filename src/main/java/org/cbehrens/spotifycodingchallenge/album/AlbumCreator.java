@@ -62,7 +62,8 @@ public class AlbumCreator {
         String externalSpotifyUrl = albumsByArtistSpotifyDto.externalUrls().spotify();
         String imageUrl = albumsByArtistSpotifyDto.images().stream()
                 .map(Image::url)
-                .findFirst().orElse(null);
+                .findFirst()
+                .orElse(null);
         Restriction restriction = albumsByArtistSpotifyDto.restriction();
         RestrictionReason restrictionReason = restriction != null ? restriction.reason() : null;
 

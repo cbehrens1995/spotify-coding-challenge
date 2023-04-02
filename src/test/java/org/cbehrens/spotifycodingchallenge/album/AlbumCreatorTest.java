@@ -98,7 +98,7 @@ class AlbumCreatorTest {
         assertThat(result.getCopyrights()).hasSize(1);
         assertThat(result.getCopyrights().get(0))
                 .returns(copyrightType, Copyright::getCopyrightType)
-                .returns(text, Copyright::getText)
+                .returns(text, Copyright::getCopyrightText)
                 .returns(result, Copyright::getAlbum);
 
         verify(spotifyDtoValidator).assertDtoHasNoSpotifyInformation(albumDto);

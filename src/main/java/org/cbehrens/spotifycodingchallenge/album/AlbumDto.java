@@ -67,4 +67,40 @@ public class AlbumDto extends AbstractSpotifyDto {
     public List<ArtistDto> getArtistDtos() {
         return artistDtos;
     }
+
+    public void setTrackCount(Integer trackCount) {
+        this.trackCount = trackCount;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setReleaseDate(String releaseDate) {
+        this.releaseDate = releaseDate;
+    }
+
+    public void setReleaseDatePrecision(ReleaseDatePrecision releaseDatePrecision) {
+        this.releaseDatePrecision = releaseDatePrecision;
+    }
+
+    public void setRestrictionReason(RestrictionReason restrictionReason) {
+        this.restrictionReason = restrictionReason;
+    }
+
+    public void setAlbumType(AlbumType albumType) {
+        this.albumType = albumType;
+    }
+
+    public void setCopyrightDtos(List<CopyrightDto> copyrightDtos) {
+        this.copyrightDtos = copyrightDtos;
+    }
+
+    public void setArtistDtos(List<ArtistDto> artistDtos) {
+        this.artistDtos = artistDtos;
+    }
 }
