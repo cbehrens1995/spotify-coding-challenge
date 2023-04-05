@@ -1,12 +1,12 @@
 package org.cbehrens.spotifycodingchallenge.artist;
 
 import org.cbehrens.spotifycodingchallenge.album.Album;
-import org.cbehrens.spotifycodingchallenge.commons.AbstractSpotifyEntityBuilder;
+import org.cbehrens.spotifycodingchallenge.commons.AbstractSpotifyBasedEntityBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ArtistBuilder extends AbstractSpotifyEntityBuilder<Artist, ArtistBuilder> {
+public class ArtistBuilder extends AbstractSpotifyBasedEntityBuilder<Artist, ArtistBuilder> {
 
     private Integer followersCount;
     private String imageUrl;

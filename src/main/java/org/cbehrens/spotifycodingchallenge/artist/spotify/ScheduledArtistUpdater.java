@@ -5,7 +5,7 @@ import org.cbehrens.spotifycodingchallenge.artist.Artist;
 import org.cbehrens.spotifycodingchallenge.artist.ArtistRepository;
 import org.cbehrens.spotifycodingchallenge.artist.ArtistSpotifyClient;
 import org.cbehrens.spotifycodingchallenge.artist.ArtistUpdater;
-import org.cbehrens.spotifycodingchallenge.commons.AbstractSpotifyEntity;
+import org.cbehrens.spotifycodingchallenge.commons.AbstractSpotifyBasedEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,7 +49,7 @@ public class ScheduledArtistUpdater {
 
     private void updateArtistPartitioned(List<Artist> unmodifiedSpotifyArtists) {
         List<String> artistSpotifyIds = unmodifiedSpotifyArtists.stream()
-                .map(AbstractSpotifyEntity::getSpotifyId)
+                .map(AbstractSpotifyBasedEntity::getSpotifyId)
                 .toList();
         ArtistSpotifyWrapperDto artistSpotifyWrapperDto = artistSpotifyClient.getArtists(artistSpotifyIds);
         List<ArtistSpotifyDto> artistSpotifyDtos = artistSpotifyWrapperDto.artistSpotifyDtos();

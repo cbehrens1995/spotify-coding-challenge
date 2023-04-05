@@ -2,7 +2,7 @@ package org.cbehrens.spotifycodingchallenge.album;
 
 import org.cbehrens.spotifycodingchallenge.album.copyright.Copyright;
 import org.cbehrens.spotifycodingchallenge.artist.Artist;
-import org.cbehrens.spotifycodingchallenge.commons.AbstractSpotifyEntity;
+import org.cbehrens.spotifycodingchallenge.commons.AbstractSpotifyBasedEntity;
 import org.cbehrens.spotifycodingchallenge.commons.Origin;
 
 import javax.persistence.*;
@@ -11,7 +11,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "album")
-public class Album extends AbstractSpotifyEntity {
+public class Album extends AbstractSpotifyBasedEntity {
 
     @Column(name = "track_count")
     private Integer trackCount;

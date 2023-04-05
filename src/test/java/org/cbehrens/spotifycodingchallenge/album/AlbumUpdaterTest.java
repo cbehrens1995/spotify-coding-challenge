@@ -7,7 +7,7 @@ import org.cbehrens.spotifycodingchallenge.album.copyright.CopyrightType;
 import org.cbehrens.spotifycodingchallenge.album.spotify.AlbumSpotifyDtoBuilder;
 import org.cbehrens.spotifycodingchallenge.artist.*;
 import org.cbehrens.spotifycodingchallenge.artist.spotify.ArtistSpotifyDtoBuilder;
-import org.cbehrens.spotifycodingchallenge.commons.AbstractSpotifyEntity;
+import org.cbehrens.spotifycodingchallenge.commons.AbstractSpotifyBasedEntity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -27,7 +27,7 @@ import static org.mockito.Mockito.*;
 class AlbumUpdaterTest {
 
     @Mock
-    private SpotifyDtoValidator spotifyDtoValidator;
+    private SpotifyBasedDtoValidator spotifyBasedDtoValidator;
     @Mock
     private ArtistRetriever artistRetriever;
     @Mock
@@ -37,7 +37,7 @@ class AlbumUpdaterTest {
 
     @BeforeEach
     void init() {
-        testee = new AlbumUpdater(spotifyDtoValidator, artistRetriever, artistRepository);
+        testee = new AlbumUpdater(spotifyBasedDtoValidator, artistRetriever, artistRepository);
     }
 
     private static Stream<Arguments> parameterFor_thatUpdateWorks_UpdateOfFields() {
@@ -88,9 +88,9 @@ class AlbumUpdaterTest {
                 .returns(releaseDatePrecision, Album::getReleaseDatePrecision)
                 .returns(restrictionReason, Album::getRestrictionReason)
                 .returns(albumType, Album::getAlbumType)
-                .returns(true, AbstractSpotifyEntity::isManuallyAdjusted);
+                .returns(true, AbstractSpotifyBasedEntity::isManuallyAdjusted);
 
-        verify(spotifyDtoValidator).assertDtoHasNoSpotifyInformation(albumDto);
+        verify(spotifyBasedDtoValidator).assertDtoHasNoSpotifyInformation(albumDto);
     }
 
     @Test
@@ -129,7 +129,7 @@ class AlbumUpdaterTest {
         //then
         assertThat(result.isManuallyAdjusted()).isFalse();
 
-        verify(spotifyDtoValidator).assertDtoHasNoSpotifyInformation(albumDto);
+        verify(spotifyBasedDtoValidator).assertDtoHasNoSpotifyInformation(albumDto);
         verifyNoInteractions(artistRetriever);
     }
 
@@ -173,7 +173,7 @@ class AlbumUpdaterTest {
                 .returns(copyrightType, Copyright::getCopyrightType)
                 .returns(album, Copyright::getAlbum);
 
-        verify(spotifyDtoValidator).assertDtoHasNoSpotifyInformation(albumDto);
+        verify(spotifyBasedDtoValidator).assertDtoHasNoSpotifyInformation(albumDto);
         verifyNoInteractions(artistRetriever);
     }
 
@@ -202,7 +202,7 @@ class AlbumUpdaterTest {
         assertThat(result.isManuallyAdjusted()).isTrue();
         assertThat(result.getArtists()).containsExactly(artist1);
 
-        verify(spotifyDtoValidator).assertDtoHasNoSpotifyInformation(albumDto);
+        verify(spotifyBasedDtoValidator).assertDtoHasNoSpotifyInformation(albumDto);
         verifyNoInteractions(artistRepository);
     }
 
@@ -235,7 +235,7 @@ class AlbumUpdaterTest {
         assertThat(result.isManuallyAdjusted()).isTrue();
         assertThat(result.getArtists()).containsExactly(artist);
 
-        verify(spotifyDtoValidator).assertDtoHasNoSpotifyInformation(albumDto);
+        verify(spotifyBasedDtoValidator).assertDtoHasNoSpotifyInformation(albumDto);
         verifyNoInteractions(artistRetriever);
     }
 

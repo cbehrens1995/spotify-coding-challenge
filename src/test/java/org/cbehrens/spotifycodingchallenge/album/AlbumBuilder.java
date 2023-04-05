@@ -2,12 +2,12 @@ package org.cbehrens.spotifycodingchallenge.album;
 
 import org.cbehrens.spotifycodingchallenge.album.copyright.Copyright;
 import org.cbehrens.spotifycodingchallenge.artist.Artist;
-import org.cbehrens.spotifycodingchallenge.commons.AbstractSpotifyEntityBuilder;
+import org.cbehrens.spotifycodingchallenge.commons.AbstractSpotifyBasedEntityBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class AlbumBuilder extends AbstractSpotifyEntityBuilder<Album, AlbumBuilder> {
+public class AlbumBuilder extends AbstractSpotifyBasedEntityBuilder<Album, AlbumBuilder> {
 
     private Integer trackCount;
     private String imageUrl;

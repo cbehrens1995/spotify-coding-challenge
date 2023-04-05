@@ -15,13 +15,13 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatNoException;
 
 @ExtendWith(MockitoExtension.class)
-class SpotifyDtoValidatorTest {
+class SpotifyBasedDtoValidatorTest {
 
-    private SpotifyDtoValidator testee;
+    private SpotifyBasedDtoValidator testee;
 
     @BeforeEach
     void init() {
-        testee = new SpotifyDtoValidator();
+        testee = new SpotifyBasedDtoValidator();
     }
 
     private static Stream<Arguments> parameterFor_thatCreateManuallyThrowsException_SpotifyInformationProvided() {
@@ -46,7 +46,7 @@ class SpotifyDtoValidatorTest {
 
         //when /then
         assertThatExceptionOfType(SpotifyInformationNotAllowedException.class).isThrownBy(() -> testee.assertDtoHasNoSpotifyInformation(artistDto))
-                .withMessage("Spotify information are not allowed when creating manually an artist!");
+                .withMessage("Spotify information are not allowed!");
     }
 
     @Test

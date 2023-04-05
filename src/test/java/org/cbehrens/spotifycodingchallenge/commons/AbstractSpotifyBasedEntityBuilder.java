@@ -1,6 +1,6 @@
 package org.cbehrens.spotifycodingchallenge.commons;
 
-public abstract class AbstractSpotifyDtoBuilder<S extends AbstractSpotifyDto, B extends AbstractSpotifyDtoBuilder<S, B>> extends AbstractDtoBuilder<S, B> {
+public abstract class AbstractSpotifyBasedEntityBuilder<S extends AbstractSpotifyBasedEntity, B extends AbstractSpotifyBasedEntityBuilder<S, B>> extends AbstractEntityBuilder<S, B> {
 
     protected String externalSpotifyUrl;
     protected String spotifyId;
@@ -8,7 +8,7 @@ public abstract class AbstractSpotifyDtoBuilder<S extends AbstractSpotifyDto, B 
     protected Origin origin;
     protected boolean manuallyAdjusted;
 
-    protected AbstractSpotifyDtoBuilder(Long id) {
+    protected AbstractSpotifyBasedEntityBuilder(Long id) {
         super(id);
     }
 
@@ -37,5 +37,12 @@ public abstract class AbstractSpotifyDtoBuilder<S extends AbstractSpotifyDto, B 
         return (B) this;
     }
 
+
+    public S build(S spotifyEntity) {
+        if (manuallyAdjusted) {
+            spotifyEntity.setManuallyAdjusted();
+        }
+        return super.build(spotifyEntity);
+    }
 
 }

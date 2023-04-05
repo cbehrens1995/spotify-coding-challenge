@@ -18,16 +18,16 @@ import static org.mockito.Mockito.verify;
 class ArtistUpdaterTest {
 
     @Mock
-    private SpotifyDtoValidator spotifyDtoValidator;
+    private SpotifyBasedDtoValidator spotifyBasedDtoValidator;
 
     private ArtistUpdater testee;
 
     @BeforeEach
     void init() {
-        testee = new ArtistUpdater(spotifyDtoValidator);
+        testee = new ArtistUpdater(spotifyBasedDtoValidator);
     }
 
-    private static Stream<Arguments> parameterFor_thatUpdateWorks() {
+    private static Stream<Arguments> parameterFor_thatUpdateManuallyWorks() {
         return Stream.of(
                 Arguments.of(1, "name", 2, "imageUrl", false),
                 Arguments.of(2, "name", 2, "imageUrl", true),
@@ -40,8 +40,8 @@ class ArtistUpdaterTest {
     }
 
     @ParameterizedTest
-    @MethodSource("parameterFor_thatUpdateWorks")
-    void thatUpdateWorks(Integer followersCount,
+    @MethodSource("parameterFor_thatUpdateManuallyWorks")
+    void thatUpdateManuallyWorks(Integer followersCount,
                          String name,
                          Integer popularity,
                          String imageUrl,
@@ -63,7 +63,7 @@ class ArtistUpdaterTest {
                 .build();
 
         //when
-        Artist result = testee.updateFromSpotify(artist, artistDto);
+        Artist result = testee.updateManually(artist, artistDto);
 
         //then
         assertThat(result)
@@ -76,7 +76,7 @@ class ArtistUpdaterTest {
                 .returns(null, Artist::getSpotifyId)
                 .returns(null, Artist::getUri);
 
-        verify(spotifyDtoValidator).assertDtoHasNoSpotifyInformation(artistDto);
+        verify(spotifyBasedDtoValidator).assertDtoHasNoSpotifyInformation(artistDto);
     }
 
     private static Stream<Arguments> parameterFor_thatUpdateFromSpotifyWorks() {

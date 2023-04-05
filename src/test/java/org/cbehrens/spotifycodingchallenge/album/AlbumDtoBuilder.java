@@ -2,12 +2,12 @@ package org.cbehrens.spotifycodingchallenge.album;
 
 import org.cbehrens.spotifycodingchallenge.album.copyright.CopyrightDto;
 import org.cbehrens.spotifycodingchallenge.artist.ArtistDto;
-import org.cbehrens.spotifycodingchallenge.commons.AbstractSpotifyDtoBuilder;
+import org.cbehrens.spotifycodingchallenge.commons.AbstractSpotifyBasedDtoBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class AlbumDtoBuilder extends AbstractSpotifyDtoBuilder<AlbumDto, AlbumDtoBuilder> {
+public class AlbumDtoBuilder extends AbstractSpotifyBasedDtoBuilder<AlbumDto, AlbumDtoBuilder> {
 
     private Integer trackCount;
     private String imageUrl;

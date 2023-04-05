@@ -19,13 +19,13 @@ class ArtistCreatorTest {
     @Mock
     private ArtistRepository artistRepository;
     @Mock
-    private SpotifyDtoValidator spotifyDtoValidator;
+    private SpotifyBasedDtoValidator spotifyBasedDtoValidator;
 
     private ArtistCreator testee;
 
     @BeforeEach
     void init() {
-        testee = new ArtistCreator(artistRepository, spotifyDtoValidator);
+        testee = new ArtistCreator(artistRepository, spotifyBasedDtoValidator);
     }
 
     @Test

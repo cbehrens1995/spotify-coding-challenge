@@ -10,16 +10,16 @@ import org.springframework.stereotype.Component;
 public class ArtistCreator {
 
     private final ArtistRepository artistRepository;
-    private final SpotifyDtoValidator spotifyDtoValidator;
+    private final SpotifyBasedDtoValidator spotifyBasedDtoValidator;
 
     @Autowired
-    public ArtistCreator(ArtistRepository artistRepository, SpotifyDtoValidator spotifyDtoValidator) {
+    public ArtistCreator(ArtistRepository artistRepository, SpotifyBasedDtoValidator spotifyBasedDtoValidator) {
         this.artistRepository = artistRepository;
-        this.spotifyDtoValidator = spotifyDtoValidator;
+        this.spotifyBasedDtoValidator = spotifyBasedDtoValidator;
     }
 
     public Artist createManually(ArtistDto artistDto) {
-        spotifyDtoValidator.assertDtoHasNoSpotifyInformation(artistDto);
+        spotifyBasedDtoValidator.assertDtoHasNoSpotifyInformation(artistDto);
         return createInternal(null, artistDto.getFollowersCount(), null, artistDto.getImageUrl(), artistDto.getName(), artistDto.getPopularity(), null, Origin.MANUAL);
     }
 

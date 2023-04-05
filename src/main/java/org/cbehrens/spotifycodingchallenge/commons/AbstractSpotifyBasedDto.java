@@ -1,6 +1,6 @@
 package org.cbehrens.spotifycodingchallenge.commons;
 
-public abstract class AbstractSpotifyDto extends AbstractDto {
+public abstract class AbstractSpotifyBasedDto extends AbstractDto {
 
     private String externalSpotifyUrl;
     private String spotifyId;
@@ -8,7 +8,7 @@ public abstract class AbstractSpotifyDto extends AbstractDto {
     private Origin origin;
     private Boolean manuallyAdjusted;
 
-    protected AbstractSpotifyDto(Long id, String externalSpotifyUrl, String spotifyId, String uri, Origin origin, Boolean manuallyAdjusted) {
+    protected AbstractSpotifyBasedDto(Long id, String externalSpotifyUrl, String spotifyId, String uri, Origin origin, Boolean manuallyAdjusted) {
         super(id);
         this.externalSpotifyUrl = externalSpotifyUrl;
         this.spotifyId = spotifyId;

@@ -8,7 +8,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.MappedSuperclass;
 
 @MappedSuperclass
-public class AbstractSpotifyEntity extends AbstractEntity {
+public class AbstractSpotifyBasedEntity extends AbstractEntity {
 
     @Column(name = "external_spotify_url")
     private String externalSpotifyUrl;
@@ -26,7 +26,7 @@ public class AbstractSpotifyEntity extends AbstractEntity {
     @Column(name = "manually_adjusted")
     private Boolean manuallyAdjusted;
 
-    public AbstractSpotifyEntity(String externalSpotifyUrl, String spotifyId, String uri, Origin origin) {
+    public AbstractSpotifyBasedEntity(String externalSpotifyUrl, String spotifyId, String uri, Origin origin) {
         this.externalSpotifyUrl = externalSpotifyUrl;
         this.spotifyId = spotifyId;
         this.uri = uri;
@@ -34,7 +34,7 @@ public class AbstractSpotifyEntity extends AbstractEntity {
         this.manuallyAdjusted = false;
     }
 
-    public AbstractSpotifyEntity() {
+    public AbstractSpotifyBasedEntity() {
     }
 
     public String getExternalSpotifyUrl() {

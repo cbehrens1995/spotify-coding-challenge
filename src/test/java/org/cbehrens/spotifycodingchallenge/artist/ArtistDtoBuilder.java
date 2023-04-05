@@ -1,8 +1,8 @@
 package org.cbehrens.spotifycodingchallenge.artist;
 
-import org.cbehrens.spotifycodingchallenge.commons.AbstractSpotifyDtoBuilder;
+import org.cbehrens.spotifycodingchallenge.commons.AbstractSpotifyBasedDtoBuilder;
 
-public class ArtistDtoBuilder extends AbstractSpotifyDtoBuilder<ArtistDto, ArtistDtoBuilder> {
+public class ArtistDtoBuilder extends AbstractSpotifyBasedDtoBuilder<ArtistDto, ArtistDtoBuilder> {
 
     private Integer followersCount;
     private String imageUrl;

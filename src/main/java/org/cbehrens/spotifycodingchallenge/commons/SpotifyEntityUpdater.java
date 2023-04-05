@@ -4,7 +4,7 @@ import java.util.Objects;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 
-public abstract class SpotifyEntityUpdater<S extends AbstractSpotifyEntity> {
+public abstract class SpotifyEntityUpdater<S extends AbstractSpotifyBasedEntity> {
 
     protected  <T> boolean updateIfChanged(S spotifyEntity, Function<S, T> getterFunction, BiConsumer<S, T> setter, T newValue) {
         T oldValue = getterFunction.apply(spotifyEntity);

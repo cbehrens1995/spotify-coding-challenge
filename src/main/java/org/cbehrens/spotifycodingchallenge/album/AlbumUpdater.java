@@ -21,19 +21,19 @@ import java.util.Objects;
 @Component
 public class AlbumUpdater extends SpotifyEntityUpdater<Album> {
 
-    private final SpotifyDtoValidator spotifyDtoValidator;
+    private final SpotifyBasedDtoValidator spotifyBasedDtoValidator;
     private final ArtistRetriever artistRetriever;
     private final ArtistRepository artistRepository;
 
     @Autowired
-    public AlbumUpdater(SpotifyDtoValidator spotifyDtoValidator, ArtistRetriever artistRetriever, ArtistRepository artistRepository) {
-        this.spotifyDtoValidator = spotifyDtoValidator;
+    public AlbumUpdater(SpotifyBasedDtoValidator spotifyBasedDtoValidator, ArtistRetriever artistRetriever, ArtistRepository artistRepository) {
+        this.spotifyBasedDtoValidator = spotifyBasedDtoValidator;
         this.artistRetriever = artistRetriever;
         this.artistRepository = artistRepository;
     }
 
     public Album update(Album album, AlbumDto albumDto) {
-        spotifyDtoValidator.assertDtoHasNoSpotifyInformation(albumDto);
+        spotifyBasedDtoValidator.assertDtoHasNoSpotifyInformation(albumDto);
 
         boolean isBasicFieldUpdated = updateBasicFieldIfNecessary(album, albumDto.getTrackCount(), albumDto.getImageUrl(),
                 albumDto.getName(), albumDto.getReleaseDate(), albumDto.getReleaseDatePrecision(),

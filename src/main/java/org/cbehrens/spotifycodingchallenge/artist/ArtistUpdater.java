@@ -9,15 +9,15 @@ import org.springframework.stereotype.Component;
 @Component
 public class ArtistUpdater extends SpotifyEntityUpdater<Artist> {
 
-    private final SpotifyDtoValidator spotifyDtoValidator;
+    private final SpotifyBasedDtoValidator spotifyBasedDtoValidator;
 
     @Autowired
-    public ArtistUpdater(SpotifyDtoValidator spotifyDtoValidator) {
-        this.spotifyDtoValidator = spotifyDtoValidator;
+    public ArtistUpdater(SpotifyBasedDtoValidator spotifyBasedDtoValidator) {
+        this.spotifyBasedDtoValidator = spotifyBasedDtoValidator;
     }
 
-    public Artist updateFromSpotify(Artist artist, ArtistDto artistDto) {
-        spotifyDtoValidator.assertDtoHasNoSpotifyInformation(artistDto);
+    public Artist updateManually(Artist artist, ArtistDto artistDto) {
+        spotifyBasedDtoValidator.assertDtoHasNoSpotifyInformation(artistDto);
 
         Integer followersCount = artistDto.getFollowersCount();
         String name = artistDto.getName();

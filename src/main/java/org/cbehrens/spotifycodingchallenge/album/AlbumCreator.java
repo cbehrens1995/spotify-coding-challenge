@@ -7,7 +7,7 @@ import org.cbehrens.spotifycodingchallenge.album.spotify.CopyrightSpotifyDto;
 import org.cbehrens.spotifycodingchallenge.album.spotify.Restriction;
 import org.cbehrens.spotifycodingchallenge.artist.Artist;
 import org.cbehrens.spotifycodingchallenge.artist.ArtistRetriever;
-import org.cbehrens.spotifycodingchallenge.artist.SpotifyDtoValidator;
+import org.cbehrens.spotifycodingchallenge.artist.SpotifyBasedDtoValidator;
 import org.cbehrens.spotifycodingchallenge.artist.spotify.ArtistSpotifyDto;
 import org.cbehrens.spotifycodingchallenge.commons.Origin;
 import org.cbehrens.spotifycodingchallenge.commons.spotify.Image;
@@ -21,18 +21,18 @@ import java.util.List;
 public class AlbumCreator {
 
     private final AlbumRepository albumRepository;
-    private final SpotifyDtoValidator spotifyDtoValidator;
+    private final SpotifyBasedDtoValidator spotifyBasedDtoValidator;
     private final ArtistRetriever artistRetriever;
 
     @Autowired
-    public AlbumCreator(AlbumRepository albumRepository, SpotifyDtoValidator spotifyDtoValidator, ArtistRetriever artistRetriever) {
+    public AlbumCreator(AlbumRepository albumRepository, SpotifyBasedDtoValidator spotifyBasedDtoValidator, ArtistRetriever artistRetriever) {
         this.albumRepository = albumRepository;
-        this.spotifyDtoValidator = spotifyDtoValidator;
+        this.spotifyBasedDtoValidator = spotifyBasedDtoValidator;
         this.artistRetriever = artistRetriever;
     }
 
     public Album createManually(AlbumDto albumDto) {
-        spotifyDtoValidator.assertDtoHasNoSpotifyInformation(albumDto);
+        spotifyBasedDtoValidator.assertDtoHasNoSpotifyInformation(albumDto);
 
         List<Artist> artists = albumDto.getArtistDtos().stream()
                 .map(artistRetriever::getOrCreate)

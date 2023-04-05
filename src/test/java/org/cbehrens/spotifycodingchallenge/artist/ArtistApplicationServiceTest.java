@@ -94,7 +94,7 @@ class ArtistApplicationServiceTest {
 
         when(artistRepository.findByIdOrThrow(id))
                 .thenReturn(artist);
-        when(artistUpdater.updateFromSpotify(artist, artistDto))
+        when(artistUpdater.updateManually(artist, artistDto))
                 .thenReturn(updatedArtist);
         when(artistConvertService.toDto(updatedArtist))
                 .thenReturn(resultDto);

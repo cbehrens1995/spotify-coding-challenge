@@ -6,7 +6,7 @@ import org.cbehrens.spotifycodingchallenge.album.copyright.CopyrightType;
 import org.cbehrens.spotifycodingchallenge.artist.ArtistBuilder;
 import org.cbehrens.spotifycodingchallenge.artist.ArtistDtoBuilder;
 import org.cbehrens.spotifycodingchallenge.artist.ArtistRetriever;
-import org.cbehrens.spotifycodingchallenge.artist.SpotifyDtoValidator;
+import org.cbehrens.spotifycodingchallenge.artist.SpotifyBasedDtoValidator;
 import org.cbehrens.spotifycodingchallenge.commons.Origin;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -26,7 +26,7 @@ class AlbumCreatorTest {
     @Mock
     private AlbumRepository albumRepository;
     @Mock
-    private SpotifyDtoValidator spotifyDtoValidator;
+    private SpotifyBasedDtoValidator spotifyBasedDtoValidator;
     @Mock
     private ArtistRetriever artistRetriever;
 
@@ -34,7 +34,7 @@ class AlbumCreatorTest {
 
     @BeforeEach
     void init() {
-        testee = new AlbumCreator(albumRepository, spotifyDtoValidator, artistRetriever);
+        testee = new AlbumCreator(albumRepository, spotifyBasedDtoValidator, artistRetriever);
     }
 
     @Test
@@ -101,6 +101,6 @@ class AlbumCreatorTest {
                 .returns(text, Copyright::getCopyrightText)
                 .returns(result, Copyright::getAlbum);
 
-        verify(spotifyDtoValidator).assertDtoHasNoSpotifyInformation(albumDto);
+        verify(spotifyBasedDtoValidator).assertDtoHasNoSpotifyInformation(albumDto);
     }
 }
